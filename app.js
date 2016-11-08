@@ -62,7 +62,8 @@ app.get('/persons', getAllPersons);
 // Endpoint for get individual persons
 var getPerson = function(req, res) {
   if (req.person) {
-    res.send(200, JSON.stringify(req.person));
+    // res.send(200, JSON.stringify(req.person));
+    res.status(200).jsonp(req.person);
   }
   else {
     res.send(400, { message: "Unrecognized identifier: " + identifier });
