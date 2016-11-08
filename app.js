@@ -1,15 +1,13 @@
-var personData = [
+var listData = [
   {
     "id": 1,
-    "firstName": "Ted",
-    "lastName": "Neward",
-    "status": "MEANing"
+    "listName": "Spice Night!",
+    "ingredients": "['peppers', 'onions', 'cheese', 'cilantro', 'pork', 'beef']"
   },
   {
     "id": 2,
-    "firstName": "Brian",
-    "lastName": "Randell",
-    "status": "TFSing"
+    "listName": "Sweet Night!",
+    "ingredients": "['vanilla extract', 'syrup', 'ice cream', 'chocolate', 'cookies', 'apples']"
   }
 ];
 
@@ -49,77 +47,77 @@ var server = app.listen(port, "127.0.0.1", function () {
 });
 
 // Set up endpoint to grab all people
-var getAllPersons = function(req, res) {
-  var response = personData;
+var getAllLists = function(req, res) {
+  var response = listData;
   // res.send(JSON.stringify(response));
   res.status(200).jsonp(response);
 };
-app.get('/persons', getAllPersons);
+app.get('/lists', getAllLists);
 
 
 //NOTE: ORDER OF DEFINITION MATTERS!! If callback is defined after endpoint then
 // route definition does not know that it is a callback
-// Endpoint for get individual persons
-var getPerson = function(req, res) {
-  if (req.person) {
-    // res.send(200, JSON.stringify(req.person));
-    res.status(200).jsonp(req.person);
+// Endpoint for get individual lists
+var getLists = function(req, res) {
+  if (req.list) {
+    // res.send(200, JSON.stringify(req.list));
+    res.status(200).jsonp(req.list);
   }
   else {
     res.send(400, { message: "Unrecognized identifier: " + identifier });
   }
 }
-app.get('/persons/:personId', getPerson);
+app.get('/lists/:listId', getLists);
 //NOTE: we can also get params object from the request object in the callback
 // but calling the param method allows us to do some filtering
-app.param('personId', function(req, res, next, personId) {
-  debug("personId found:", personId);
-  var person = _.find(personData, function(it) { // this is _.find function is from lodash it returns the Person objects that satisfy personId == it.id
-    return personId == it.id;
+app.param('listId', function(req, res, next, listId) {
+  debug("listId found:", listId);
+  var list = _.find(listData, function(it) { // this is _.find function is from lodash it returns the list objects that satisfy listId == it.id
+    return listId == it.id;
   });
-  debug("person:", person);
-  req.person = person;
+  debug("list:", list);
+  req.list = list;
   next();
 });
 
 
-// add person
-var insertPerson = function(req, res) {
-  var person = req.body;
-  debug("Received", person);
-  person.id = personData.length + 1;
-  personData.push(person);
-  res.status(200).jsonp(person);
+// add list
+var insertList = function(req, res) {
+  var list = req.body;
+  debug("Received", list);
+  list.id = listData.length + 1;
+  listData.push(list);
+  res.status(200).jsonp(list);
 };
 
-app.post('/persons', insertPerson);
+app.post('/lists', insertList);
 
-// update person
-var updatePerson = function(req, res) {
-  if (req.person) {
-    var originalPerson = req.person;
-    var incomingPerson = req.body;
-    var newPerson = _.merge(originalPerson, incomingPerson);
-    res.status(200).jsonp(newPerson);
+// update list
+var updateList = function(req, res) {
+  if (req.list) {
+    var originallist = req.list;
+    var incominglist = req.body;
+    var newlist = _.merge(originallist, incominglist);
+    res.status(200).jsonp(newlist);
   } else {
-    res.status(404).jsonp({ message: "Unrecognized person identifier" });
+    res.status(404).jsonp({ message: "Unrecognized list identifier" });
   }
 }
 
 // delete route
-var deletePerson = function(req, res) {
-  if (req.person) {
-    debug("Removing", req.person.firstName, req.person.lastName);
-    _.remove(personData, function(it) {
-      it.id === req.person.id;
+var deleteList = function(req, res) {
+  if (req.list) {
+    debug("Removing", req.list.listName, req.list.ingredients);
+    _.remove(listData, function(it) {
+      it.id === req.list.id;
     });
-    debug("personData=", personData);
+    debug("listData=", listData);
     var response = { message: "Deleted successfully" };
     res.status(200).jsonp(response);
   } else {
-    var response = { message: "Unknown person identifier"};
+    var response = { message: "Unknown list identifier"};
     res.status(404).jsonp(response);
   }
 }
 
-app.delete('/persons/personId', deletePerson);
+app.delete('/lists/listId', deleteList);
