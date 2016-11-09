@@ -11,20 +11,45 @@ var listData = [
   }
 ];
 
-
-// Config process.env
-var envVars = require('./.env');
-var envVarsKeys = Object.keys(envVars);
-
-for (var varIndex = 0; varIndex < envVarsKeys.length; varIndex++) {
-  process.env[envVarsKeys[varIndex]] = envVars[envVarsKeys[varIndex]];
-}
-
 // Load modules
 var bodyParser = require('body-parser');
 var _ = require('lodash');
 var express = require('express');
 var debug = require('debug')('app'); // debug will only output if DEBUG = (string in second parentheses aka app)
+
+// Go get your configuration settings
+var config = require('./config.js');
+debug("Mongo is available at ",config.mongoServer,":",config.mongoPort);
+
+// get mongo module
+var MongoClient = require("mongodb");
+
+// Connect to MongoDB
+var mongo = null;
+var lists = null;
+var mongoURL = "mongodb://" + config.mongoServer +
+  ":" + config.mongoPort + "/foodiedice";
+debug("Attempting connection to mongo @",mongoURL);
+MongoClient.connect(mongoURL, function(err, db) {
+  if (err) {
+    debug("ERROR:", err);
+  }
+  else {
+    debug("Connected correctly to server");
+    mongo = db;
+    mongo.collections(function(err, collections) {
+      if (err) {
+        debug("ERROR:", err);
+      }
+      else {
+        for (var c in collections) {
+          debug("Found collection",collections[c]);
+        }
+        lists = mongo.collection("lists");
+      }
+    });
+  }
+});
 
 // Create express instance
 var app = express();
@@ -123,8 +148,6 @@ app.delete('/lists/listId', deleteList);
 
 // delete all
 var deleteAllList = function(req, res) {
-  // console.log(req);
-  // console.log(res);
   var list = listData;
 
   if (Object.keys(list).length)
@@ -134,8 +157,6 @@ var deleteAllList = function(req, res) {
       return true;
     });
     var response = list;
-    // console.log("response");
-    // console.log(response);
     res.status(200).jsonp(response);
   }
   else {

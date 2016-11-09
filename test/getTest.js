@@ -88,4 +88,6 @@ describe('/lists tests', function() {
     });
   });
 
+  //TODO: right update test
+
 });
