@@ -72,13 +72,20 @@ describe('/lists tests', function() {
     });
   });
 
-
-    it('should allow me to delete a list', function(done) {
-      request
-        .delete('/lists/listId')
-        //.expect(200)
-        .expect('Content-Type',/json/)
-      .end(done);
-    })
+  // delete all
+  it('should allow me to delete a list', function(done) {
+    request
+      .delete('/lists')
+      .expect(200)
+      .expect('Content-Type',/json/)
+      .expect(function(res) {
+        var empty = [];
+        assert(res.body, empty);
+      })
+    .end(function(err, res) {
+      if (err) return done(err);
+      done();
+    });
+  });
 
 });

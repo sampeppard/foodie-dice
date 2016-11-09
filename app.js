@@ -88,7 +88,6 @@ var insertList = function(req, res) {
   listData.push(list);
   res.status(200).jsonp(list);
 };
-
 app.post('/lists', insertList);
 
 // update list
@@ -102,6 +101,7 @@ var updateList = function(req, res) {
     res.status(404).jsonp({ message: "Unrecognized list identifier" });
   }
 }
+app.put('/lists/listId', updateList);
 
 // delete route
 var deleteList = function(req, res) {
@@ -118,5 +118,29 @@ var deleteList = function(req, res) {
     res.status(404).jsonp(response);
   }
 }
-
 app.delete('/lists/listId', deleteList);
+
+
+// delete all
+var deleteAllList = function(req, res) {
+  // console.log(req);
+  // console.log(res);
+  var list = listData;
+
+  if (Object.keys(list).length)
+  {
+    debug("Removing All Ingredients", list);
+    _.remove(list, function(it) {
+      return true;
+    });
+    var response = list;
+    // console.log("response");
+    // console.log(response);
+    res.status(200).jsonp(response);
+  }
+  else {
+    console.log("error");
+  }
+  // res.status(200).jsonp({ message: "test" });
+}
+app.delete('/lists', deleteAllList);
