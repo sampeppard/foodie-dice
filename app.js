@@ -42,7 +42,6 @@ debug("We picked up", port, "for the port");
 var server = app.listen(port, "127.0.0.1", function () {
     var host = server.address().address;
     var port = server.address().port;
-    console.log(server.address());
     console.log("Example app listening at http://%s:%s", host, port);
 });
 
@@ -115,7 +114,7 @@ var deleteList = function(req, res) {
     var response = { message: "Deleted successfully" };
     res.status(200).jsonp(response);
   } else {
-    var response = { message: "Unknown list identifier"};
+    var response = { message: "Unknown list identifier" };
     res.status(404).jsonp(response);
   }
 }
