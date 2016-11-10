@@ -180,5 +180,4 @@ var insertList = function(req, res) {
 };
 router.post('/lists', insertList);
 
-
 module.exports = router;

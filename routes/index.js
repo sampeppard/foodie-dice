@@ -5,7 +5,7 @@ var debug = require('debug')('server');
 
 router.get('/', function(req, res, next) {
   debug("/ requested");
-  res.send('INDEX PAGE');
+  res.render('index.html');
 });
 
 module.exports = router;
