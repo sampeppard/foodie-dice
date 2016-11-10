@@ -1,28 +1,26 @@
-
-// Load modules
-var bodyParser = require('body-parser');
-var path = require('path');
-
+var express = require('express');
+var router = express.Router();
 
 var _ = require('lodash');
-var express = require('express');
 var mongoose = require('mongoose');
-var debug = require('debug')('app'); // debug will only output if DEBUG = (string in second parentheses aka app)
+var debug = require('debug')('lists');
+var mongodb = require("mongodb");
 
-// Go get your configuration settings
+
+/*======CONFIG MONGODB=======================================================*/
+
+// Go get your configuration settings from .env
 var config = require('./config.js');
-debug("Mongo is available at ",config.mongoServer,":",config.mongoPort);
+debug("Mongo is available at ", config.mongoServer, ":", config.mongoPort);
 
-// get mongo module
-var MongoClient = require("mongodb");
 
-// Connect to MongoDB
+// Connect to MongoDB and grab documents
 var mongo = null;
 var lists = null;
 var mongoURL = config.mongoURL;
 debug("Attempting connection to mongo @", mongoURL);
 //NOTE: Be careful with async here! Concurrency problems can occur
-MongoClient.connect(mongoURL, function(err, db) {
+mongodb.connect(mongoURL, function(err, db) {
   if (err) {
     debug("ERROR:", err);
   }
@@ -44,47 +42,14 @@ MongoClient.connect(mongoURL, function(err, db) {
 });
 
 
-var listSchema = mongoose.Schema({
-    listName: String,
-    ingredients: String[],
-    status: String
-});
-var List = mongoose.model('List', listSchema);
 
+/*===============API ENDPOINTS===================*/
 
-
-// Create express instance
-var app = express();
-
-// Set Static Folder (Angular Entry Point)
-app.use(express.static(path.join(__dirname, 'client')));
-
-// Body Parser MW
-app.use(bodyParser.json());
-//NEEDED?
-app.use(bodyParser.urlencoded({extended: false}));
-
-app.use('/', index);
-app.use('/api', tasks);
-
-app.listen();
-
-
-// Set up a simple route
-app.get('/', function (req, res) {
-  debug("/ requested");
-  res.send("Hello World!");
+// INDEX
+router.get('/', function(req, res, next) {
+  res.send('INDEX PAGE');
 });
 
-//NOTE: Watch out for concurrency issues between this server and mongodb
-// Start the server
-var port = process.env.PORT || 3000;
-debug("We picked up", port, "for the port");
-var server = app.listen(port, "127.0.0.1", function () {
-    var host = server.address().address;
-    var port = server.address().port;
-    console.log("Example app listening at http://%s:%s", host, port);
-});
 
 /*------------MIDDLEWARE--------------*/
 
@@ -215,22 +180,5 @@ var insertList = function(req, res) {
 };
 app.post('/lists', insertList);
 
-// // delete all
-// var deleteAllList = function(req, res) {
-//   var list = listData;
-//
-//   if (Object.keys(list).length)
-//   {
-//     debug("Removing All Ingredients", list);
-//     _.remove(list, function(it) {
-//       return true;
-//     });
-//     var response = list;
-//     res.status(200).jsonp(response);
-//   }
-//   else {
-//     console.log("error");
-//   }
-//   // res.status(200).jsonp({ message: "test" });
-// }
-// app.delete('/lists', deleteAllList);
+
+module.exports = router;
