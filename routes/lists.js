@@ -3,14 +3,14 @@ var router = express.Router();
 
 var _ = require('lodash');
 var mongoose = require('mongoose');
-var debug = require('debug')('lists');
+var debug = require('debug')('server');
 var mongodb = require("mongodb");
 
 
 /*======CONFIG MONGODB=======================================================*/
 
 // Go get your configuration settings from .env
-var config = require('./config.js');
+var config = require('../config.js');
 debug("Mongo is available at ", config.mongoServer, ":", config.mongoPort);
 
 
@@ -56,7 +56,7 @@ router.get('/', function(req, res, next) {
 // MIDDLEWARE FOR ROUTES WITH DYNAMIC listID
 //NOTE: we can also get params object from the request object in the callback
 // but calling the param method allows us to do some filtering
-app.param('listId', function(req, res, next, listId) {
+router.param('listId', function(req, res, next, listId) {
   debug("listId found:", listId);
   if (mongodb.ObjectId.isValid(listId))
   {
@@ -93,9 +93,9 @@ app.param('listId', function(req, res, next, listId) {
 // route definition does not know that it is a callback
 // Endpoint for get individual lists
 var getList = function(req, res) {
-  res.status(200).jsonp(req.person);
+  res.status(200).jsonp(req.list);
 };
-app.get('/lists/:listId', getList);
+router.get('/lists/:listId', getList);
 
 // update list
 var updateList = function(req, res) {
@@ -113,7 +113,7 @@ var updateList = function(req, res) {
   });
 };
 
-app.put('/lists/listId', updateList);
+router.put('/lists/listId', updateList);
 
 // delete route
 var deleteList = function(req, res) {
@@ -132,7 +132,7 @@ var deleteList = function(req, res) {
     }
   });
 };
-app.delete('/lists/listId', deleteList);
+router.delete('/lists/listId', deleteList);
 
 // MIDDLEWARE DEPENDENT FUNCTIONS
 
@@ -154,7 +154,7 @@ var getAllLists = function(req, res) {
     }
   });
 };
-app.get('/lists', getAllLists);
+router.get('/lists', getAllLists);
 
 // add list
 var insertList = function(req, res) {
@@ -163,7 +163,7 @@ var insertList = function(req, res) {
   // MongoDB will create identifier field _id primary key
 
   //NOTE: insertList function will terminate BEFORE database insert completes!
-  // DO NOT CALL res OUTSIDE OF CALLBACK TO MAKE SURE DB INSERT HAPPENS FIRST
+  // DO NOT CALL res OUTSIDE OF CALLBACK TO MAKE SURE DB INSERT HrouterENS FIRST
   lists.insert(list, function(err, result) {
     if (err)
     {
@@ -178,7 +178,7 @@ var insertList = function(req, res) {
 
   debug("OUTSIDE CALLBACK", list);
 };
-app.post('/lists', insertList);
+router.post('/lists', insertList);
 
 
 module.exports = router;
