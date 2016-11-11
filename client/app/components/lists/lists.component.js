@@ -27,13 +27,13 @@ var ListsComponent = (function () {
         event.preventDefault();
         var newList = {
             listName: this.listName,
-            ingredients: ["culos"]
+            ingredients: ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"]
         };
         this.listService.addList(newList)
             .subscribe(function (list) {
             _this.lists.push(list);
             _this.listName = '';
-            _this.ingredients = ["culos"];
+            _this.ingredients = ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"];
         });
     };
     return ListsComponent;

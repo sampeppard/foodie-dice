@@ -11,7 +11,7 @@ import { List } from '../../../list.model';
 export class ListsComponent {
   lists: List[];
   listName: string;
-  ingredients: ["culos"];
+  ingredients: ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"];
 
   constructor(private listService: ListService) {
     this.listService.getLists()
@@ -27,14 +27,14 @@ export class ListsComponent {
     event.preventDefault();
     var newList = {
       listName: this.listName,
-      ingredients: ["culos"]
+      ingredients: ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"]
     }
 
     this.listService.addList(newList)
       .subscribe(list => {
         this.lists.push(list);
         this.listName = '';
-        this.ingredients = ["culos"];
+        this.ingredients = ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"];
       })
   }
 }

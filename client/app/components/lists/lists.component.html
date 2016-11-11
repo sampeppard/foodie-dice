@@ -12,9 +12,11 @@
     <div class="row">
       <div class="col-md-8">
         <h3>{{list.listName}}</h3>
-        <ul class="list-group" *ngFor="let ingredient of list.ingredients">
+        <ul class="list-group">
           <li class="list-group-item active">Your Listed Ingredients</li>
-          <li class="list-group-item">{{ingredient}}</li>
+          <div *ngFor="let ingredient of list.ingredients">
+            <li class="list-group-item">{{ingredient}}</li>
+          </div>
         </ul>
       </div>
       <div class="col-md-4">
