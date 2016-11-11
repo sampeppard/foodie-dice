@@ -19,6 +19,8 @@ var mongo = null;
 var lists = null;
 var mongoURL = config.mongoURL;
 debug("Attempting connection to mongo @", mongoURL);
+
+//TODO: Importing all data at once would never scale. Look into mongo.connect config being dependent on route
 //NOTE: Be careful with async here! Concurrency problems can occur
 mongodb.connect(mongoURL, function(err, db) {
   if (err) {
@@ -163,7 +165,7 @@ var insertList = function(req, res) {
   // MongoDB will create identifier field _id primary key
 
   //NOTE: insertList function will terminate BEFORE database insert completes!
-  // DO NOT CALL res OUTSIDE OF CALLBACK TO MAKE SURE DB INSERT HrouterENS FIRST
+  // DO NOT CALL res OUTSIDE OF CALLBACK TO MAKE SURE DB INSERT HAPPENS FIRST
   lists.insert(list, function(err, result) {
     if (err)
     {
