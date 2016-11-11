@@ -1,0 +1,17 @@
+{
+  "name": "foodiedice",
+  "description": "",
+  "main": "",
+  "license": "ISC",
+  "homepage": "https://github.com/sampeppard/foodie-dice",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

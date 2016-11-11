@@ -9,6 +9,7 @@ header {
 
 .container {
   font-family: 'Numans', sans-serif;
+  margin-bottom: 100px;
 }
 
 .row {
@@ -18,7 +19,7 @@ header {
 footer {
   position: fixed;
   bottom: 0;
-  padding: 10px 0;
+  padding: 15px 0;
   width: 100%;
   height: 50px;
   text-align: center;

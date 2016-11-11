@@ -1,22 +1,24 @@
 <form class="well" (submit)="addList($event)">
   <div class="form-group">
     <input type="text" [(ngModel)]="listName" name="listName" class="form-control" placeholder="Add List">
+    <br>
+    <button type="submit" class="btn btn-xs btn-success">Add List</button>
   </div>
 </form>
 
 <div class="lists-wrapper">
   <div *ngFor="let list of lists">
+    <hr>
     <div class="row">
       <div class="col-md-8">
-        {{list.listName}}
-        {{list.ingredients}}
-        <!--TODO: Configure express endpoints to return json in iterable format-->
-        <!-- <ul *ngFor="let ingredient of list.ingredients">
-          <li>{{ingredient}}</li>
-        </ul> -->
+        <h3>{{list.listName}}</h3>
+        <ul class="list-group" *ngFor="let ingredient of list.ingredients">
+          <li class="list-group-item active">Your Listed Ingredients</li>
+          <li class="list-group-item">{{ingredient}}</li>
+        </ul>
       </div>
       <div class="col-md-4">
-        <input type="button" value="Delete" class="btn btn-danger">
+        <input type="button" value="Delete" class="btn btn-xs btn-danger">
       </div>
     </div>
   </div>

@@ -11,4 +11,11 @@ import 'rxjs/add/operator/map';
     return this.http.get('http://localhost:8000/api/lists')
       .map(res => res.json());
   }
+
+  addList(newList) {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:8000/api/lists', JSON.stringify(newList), {headers: headers})
+      .map(res => res.json());
+  }
 }

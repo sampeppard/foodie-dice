@@ -22,6 +22,20 @@ var ListsComponent = (function () {
         //NOTE: async issue!
         // console.log(this.lists[0].ingredients);
     }
+    ListsComponent.prototype.addList = function (event) {
+        var _this = this;
+        event.preventDefault();
+        var newList = {
+            listName: this.listName,
+            ingredients: ["culos"]
+        };
+        this.listService.addList(newList)
+            .subscribe(function (list) {
+            _this.lists.push(list);
+            _this.listName = '';
+            _this.ingredients = ["culos"];
+        });
+    };
     return ListsComponent;
 }());
 ListsComponent = __decorate([
