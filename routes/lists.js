@@ -11,12 +11,12 @@ var mongodb = require("mongodb");
 var ingredientSchema = mongoose.Schema({
     ingredientName: String
 });
-var Ingredient = mongoose.model('Ingredient', ingredientSchema);
 
 var listSchema = mongoose.Schema({
     listName: String,
-    ingredients: [Ingredient]
+    ingredients: [ingredientSchema]
 });
+var Ingredient = mongoose.model('Ingredient', ingredientSchema);
 var List = mongoose.model('List', listSchema);
 
 
