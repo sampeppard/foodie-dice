@@ -16,10 +16,7 @@ var ingredientSchema = mongoose.Schema({
 var listSchema = mongoose.Schema({
     listName: String,
     ingredients: [ingredientSchema]
-}, { collection: 'lists' });
-var Ingredient = mongoose.model('Ingredient', ingredientSchema);
-var List = mongoose.model('List', listSchema);
-
+});
 
 /*======CONFIG MONGODB =======================================================*/
 
@@ -35,6 +32,7 @@ var mongooseOptions = {
 
 // Connect to MongoDB through Mongoose and grab documents
 var lists = null;
+ var List = null;
 var mongoURI = config.mongoURI;
 debug("Attempting connection to mongo @", mongoURI);
 
@@ -59,13 +57,19 @@ mongoConnection.once('open', function(){
             for (var c in collections) {
                 debug("Found collection", collections[c]);
             }
+        }
+    });
 
-            lists = mongoConnection.db.collection('lists');
-            debug("lists:", typeof(lists));
+    List = mongoConnection.model('List', listSchema);
+    lists = List.find(function(err, documents) {
+        if (err) {
+            debug("onMongoConnectFail--ERROR:", err);
+        }
+        else {
+            debug("onMongoConnectSuccess:", documents);
         }
     });
 });
-
 
 /*===============API ENDPOINTS===================*/
 
