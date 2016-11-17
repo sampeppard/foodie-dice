@@ -19,5 +19,5 @@ module.exports = {
 };
 
 if (process.env["ENV"] === "prod") {
-    module.exports.mongoURL = "mongodb://" + process.env["userName"] + ":" + process.env["password"] + "@" + process.env["mongoURI"] + ":" + process.env["dbPort"] + "/" + process.env["dbName"];
+    module.exports.mongoURI = "mongodb://" + process.env["userName"] + ":" + process.env["password"] + "@" + process.env["dbHost"] + ":" + process.env["dbPort"] + "/" + process.env["dbName"];
 }

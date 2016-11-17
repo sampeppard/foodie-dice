@@ -4,59 +4,67 @@ var router = express.Router();
 var _ = require('lodash');
 var mongoose = require('mongoose');
 var debug = require('debug')('server');
-var mongodb = require("mongodb");
+var Promise = require('bluebird');
 
 /*======DEFINE MONGOOSE SCHEMAS==============================================*/
+//TODO: Pull out model definitions into seperate file
 
 var ingredientSchema = mongoose.Schema({
     ingredientName: String
-});
+}, { _id: false });
 
 var listSchema = mongoose.Schema({
     listName: String,
     ingredients: [ingredientSchema]
-});
+}, { collection: 'lists' });
 var Ingredient = mongoose.model('Ingredient', ingredientSchema);
 var List = mongoose.model('List', listSchema);
 
 
-/*======CONFIG MONGODB=======================================================*/
+/*======CONFIG MONGODB =======================================================*/
 
 // Go get your configuration settings from .env
 var config = require('../config.js');
-debug("Mongo is available at ", config.mongoServer, ":", config.mongoPort);
+debug("Mongo is available at", config.mongoServer, ":", config.mongoPort);
 
+// Set Promises library for Mongoosejs
+mongoose.Promise = Promise;
+var mongooseOptions = {
+    promiseLibrary: Promise
+};
 
-// Connect to MongoDB and grab documents
-var mongo = null;
+// Connect to MongoDB through Mongoose and grab documents
 var lists = null;
-var mongoURL = config.mongoURL;
-debug("Attempting connection to mongo @", mongoURL);
+var mongoURI = config.mongoURI;
+debug("Attempting connection to mongo @", mongoURI);
+
 
 //TODO: Importing all data at once would never scale. Define query modifier as
 // callback function with mongoose model objects (promise style syntax)
 //NOTE: Be careful with async here! Concurrency problems can occur
-mongodb.connect(mongoURL, function(err, db) {
-    if (err) {
-        debug("ERROR:", err);
-    }
-    else {
-        debug("Connected correctly to server");
-        mongo = db;
-        mongo.collections(function(err, collections) {
-            if (err) {
-                debug("ERROR:", err);
-            }
-            else {
-                for (var c in collections) {
-                    debug("Found collection", collections[c]);
-                }
-                lists = mongo.collection("lists");
-            }
-        });
-    }
+
+var mongoConnection = mongoose.createConnection(mongoURI, mongooseOptions);
+
+mongoConnection.on('error', function(err) {
+    debug("ERROR:", err);
 });
 
+mongoConnection.once('open', function(){
+    debug("Connected correctly to server");
+    mongoConnection.db.listCollections().toArray(function(err, collections) {
+        if (err) {
+            debug("ERROR:", err);
+        }
+        else {
+            for (var c in collections) {
+                debug("Found collection", collections[c]);
+            }
+
+            lists = mongoConnection.db.collection('lists');
+            debug("lists:", typeof(lists));
+        }
+    });
+});
 
 
 /*===============API ENDPOINTS===================*/
@@ -73,21 +81,11 @@ router.get('/', function(req, res, next) {
 router.param('listId', function(req, res, next, listId) {
     debug("listId found:", listId);
     if (mongodb.ObjectId.isValid(listId)) {
-        // Convert string version of listId into mongo type ObjectId
-        lists.find({"_id": new mongodb.ObjectId(listId) })
-        .toArray(function(err, docs) {
-            if (err) {
-                debug("ERROR: listId:", err);
-                res.status(500).jsonp(err);
-            }
-            else if (docs.length < 1) {
-                res.status(404).jsonp({ message: 'ID ' + listId + ' not found' });
-            }
-            else {
-                debug("list:", docs[0]);
-                req.list = docs[0];
-                next();
-            }
+        List.findById(listId)
+        .then(function(list) {
+            debug("Found", list.listName);
+            req.list = list;
+            next();
         });
     }
     else {
@@ -95,9 +93,9 @@ router.param('listId', function(req, res, next, listId) {
     }
 });
 
-/*------------MIDDLE WARE--------------*/
+/*------------MIDDLEWARE-----------------------------------------------------*/
 
-// MIDDLEWARE DEPENDENT FUNCTIONS
+/*-----------MIDDLEWARE DEPENDENT FUNCTIONS----------------------------------*/
 
 //NOTE: ORDER OF DEFINITION MATTERS!! If callback is defined after endpoint then
 // route definition does not know that it is a callback
@@ -141,21 +139,18 @@ var deleteList = function(req, res) {
 };
 router.delete('/lists/listId', deleteList);
 
-// MIDDLEWARE DEPENDENT FUNCTIONS
+/*-----------MIDDLEWARE DEPENDENT FUNCTIONS----------------------------------*/
 
 // Set up endpoint to grab all lists
 var getAllLists = function(req, res) {
-    //NOTE: argument in find is a predicate document used to filter data
-    // e.g. {'listName': 'Spice Night!' } would return all data collections
-    // which satisfy the query criteria (aka with listName = Spice Night!)
-    lists.find({}).toArray(function(err, results) {
+    List.find(function(err, lists) {
         if (err) {
             debug("getAllLists--ERROR:", err);
             res.status(500).jsonp(err);
         }
         else {
-            debug("getAllLists:", results);
-            res.status(200).jsonp(results);
+            debug("getAllLists:", lists);
+            res.status(200).jsonp(lists);
         }
     });
 };
