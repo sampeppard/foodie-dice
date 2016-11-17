@@ -11,7 +11,7 @@ var Promise = require('bluebird');
 
 var ingredientSchema = mongoose.Schema({
     ingredientName: String
-}, { _id: false });
+});
 
 var listSchema = mongoose.Schema({
     listName: String,
@@ -162,13 +162,13 @@ router.get('/lists', getAllLists);
 
 // add list
 var insertList = function(req, res) {
-    var list = req.body;
+    var list = new List(req.body);
     debug("Received", list);
     // MongoDB will create identifier field _id primary key
 
     //NOTE: insertList function will terminate BEFORE database insert completes!
     // DO NOT CALL res OUTSIDE OF CALLBACK TO MAKE SURE DB INSERT HAPPENS FIRST
-    lists.insert(list, function(err, result) {
+    list.save(function(err, list) {
         if (err) {
             res.status(500).jsonp(err);
         }

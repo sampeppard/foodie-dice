@@ -10,6 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var list_service_1 = require("../../services/list.service");
+var INGREDIENTS = [
+    { ingredientName: "pickles" },
+    { ingredientName: "peter" },
+    { ingredientName: "piper" },
+    { ingredientName: "picked" },
+    { ingredientName: "peppers" },
+    { ingredientName: "paprika" },
+    { ingredientName: "majoram" },
+    { ingredientName: "dill" },
+    { ingredientName: "snack wells" }
+];
 var ListsComponent = (function () {
     function ListsComponent(listService) {
         var _this = this;
@@ -25,15 +36,23 @@ var ListsComponent = (function () {
     ListsComponent.prototype.addList = function (event) {
         var _this = this;
         event.preventDefault();
+        // var ingredientsJSON = [];
+        //
+        // for (var ingredientIndex = 0; ingredientIndex < ingredients.length; ingredientIndex++) {
+        //     currentIngredient = {
+        //         ingredientName:
+        //     }
+        //     ingredientsJSON.push()
+        // }
         var newList = {
             listName: this.listName,
-            ingredients: ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"]
+            ingredients: INGREDIENTS
         };
         this.listService.addList(newList)
             .subscribe(function (list) {
             _this.lists.push(list);
             _this.listName = '';
-            _this.ingredients = ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"];
+            _this.ingredients = INGREDIENTS;
         });
     };
     return ListsComponent;
