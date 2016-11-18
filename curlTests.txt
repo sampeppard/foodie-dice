@@ -24,3 +24,13 @@ curl -X GET http://localhost:8000/api/lists
 //GET ONE
 
 curl -X GET http://localhost:8000/api/lists/582f0ede7e41d23901b999ab
+
+
+//LOGIN VALID
+
+curl -X POST -H "Content-type: application/json" http://localhost:8000/login -d '{ "username": "test", "password": "password" }'
+
+
+//LOGIN INVALID
+
+curl -X POST -H "Content-type: application/json" http://localhost:8000/login -d '{ "username": "Ninja", "password": "Turtle" }'

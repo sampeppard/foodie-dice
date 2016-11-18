@@ -1,5 +1,6 @@
 // config.js: Configuration determination
 //
+var debug = require('debug')('config');
 
 // Config process.env
 var envVars = require('./.env');
@@ -10,7 +11,6 @@ for (var varIndex = 0; varIndex < envVarsKeys.length; varIndex++) {
 }
 
 // Mongo config
-var debug = require('debug')('config');
 debug("Configuring environment...");
 // Use these as the default
 module.exports = {
@@ -18,6 +18,14 @@ module.exports = {
   mongoPort : "27017"
 };
 
+
 if (process.env["ENV"] === "prod") {
+
+    module.exports.port = process.env["PORT"];
+
     module.exports.mongoURI = "mongodb://" + process.env["userName"] + ":" + process.env["password"] + "@" + process.env["dbHost"] + ":" + process.env["dbPort"] + "/" + process.env["dbName"];
 }
+
+// Passport Config
+module.exports.password = process.env["testPassword"];
+module.exports.username = process.env["testUsername"];
