@@ -49,6 +49,8 @@ mongoConnection.on('error', function(err) {
 
 mongoConnection.once('open', function(){
     debug("Connected correctly to server");
+
+    // Log all collections in db for sanity check
     mongoConnection.db.listCollections().toArray(function(err, collections) {
         if (err) {
             debug("ERROR:", err);
@@ -84,7 +86,7 @@ router.get('/', function(req, res, next) {
 // MIDDLEWARE FOR ROUTES WITH DYNAMIC listID
 router.param('listId', function(req, res, next, listId) {
     debug("listId found:", listId);
-    if (mongodb.ObjectId.isValid(listId)) {
+    if (mongoose.Types.ObjectId.isValid(listId)) {
         List.findById(listId)
         .then(function(list) {
             debug("Found", list.listName);
@@ -113,35 +115,33 @@ router.get('/lists/:listId', getList);
 var updateList = function(req, res) {
     debug("Updating", req.list, "with", req.body);
     _.merge(req.list, req.body);
-    lists.updateOne({"_id":req.list._id}, req.list, function(err, result) {
+    req.list.save(function(err, list) {
         if (err) {
             res.status(500).jsonp(err);
         }
         else
         {
-            res.status(200).jsonp(result);
+            res.status(200).jsonp(list);
         }
     });
 };
-router.put('/lists/listId', updateList);
+router.put('/lists/:listId', updateList);
 
 // delete route
 var deleteList = function(req, res) {
     debug("Removing", req.list.listName, req.list.ingredients);
-    lists.deleteOne({"_id": req.list._id}, function(err, result)
-    {
+    req.list.delete(function(err, result) {
         if (err) {
             debug("deleteList: ERROR:", err);
             res.status(500).jsonp(err);
         }
         else
         {
-            res.list._id = undefined;
             res.status(200).jsonp(req.list);
         }
     });
 };
-router.delete('/lists/listId', deleteList);
+router.delete('/lists/:listId', deleteList);
 
 /*-----------MIDDLEWARE DEPENDENT FUNCTIONS----------------------------------*/
 
@@ -178,7 +178,7 @@ var insertList = function(req, res) {
         debug("INSIDE CALLBACK", list);
     });
 
-    debug("OUTSIDE CALLBACK", list);
+    // debug("OUTSIDE CALLBACK", list);
 };
 router.post('/lists', insertList);
 
