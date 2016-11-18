@@ -6,17 +6,7 @@ var mongoose = require('mongoose');
 var debug = require('debug')('server');
 var Promise = require('bluebird');
 
-/*======DEFINE MONGOOSE SCHEMAS==============================================*/
-//TODO: Pull out model definitions into seperate file
-
-var ingredientSchema = mongoose.Schema({
-    ingredientName: String
-});
-
-var listSchema = mongoose.Schema({
-    listName: String,
-    ingredients: [ingredientSchema]
-});
+var listSchema = require('../schema/list.schema.js');
 
 /*======CONFIG MONGODB =======================================================*/
 
@@ -31,8 +21,8 @@ var mongooseOptions = {
 };
 
 // Connect to MongoDB through Mongoose and grab documents
-var lists = null;
- var List = null;
+
+var List = null;
 var mongoURI = config.mongoURI;
 debug("Attempting connection to mongo @", mongoURI);
 
@@ -63,14 +53,6 @@ mongoConnection.once('open', function(){
     });
 
     List = mongoConnection.model('List', listSchema);
-    lists = List.find(function(err, documents) {
-        if (err) {
-            debug("onMongoConnectFail--ERROR:", err);
-        }
-        else {
-            debug("onMongoConnectSuccess:", documents);
-        }
-    });
 });
 
 /*===============API ENDPOINTS===================*/
@@ -83,7 +65,7 @@ router.get('/', function(req, res, next) {
 
 /*------------MIDDLEWARE--------------*/
 
-// MIDDLEWARE FOR ROUTES WITH DYNAMIC listID
+// MIDDLEWARE FOR ROUTES WITH DYNAMIC listId
 router.param('listId', function(req, res, next, listId) {
     debug("listId found:", listId);
     if (mongoose.Types.ObjectId.isValid(listId)) {
@@ -93,6 +75,7 @@ router.param('listId', function(req, res, next, listId) {
             req.list = list;
             next();
         });
+        // debug("Async Proof", req.list);
     }
     else {
         res.status(404).jsonp({ message: 'ID ' + listId + ' not found'});
@@ -177,7 +160,6 @@ var insertList = function(req, res) {
         }
         debug("INSIDE CALLBACK", list);
     });
-
     // debug("OUTSIDE CALLBACK", list);
 };
 router.post('/lists', insertList);
