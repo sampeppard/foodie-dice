@@ -66,7 +66,7 @@ passport.use(new LocalStrategy(
 app.post('/login',
     passport.authenticate('local', { successRedirect: '/',
                                      failureRedirect: '/login',
-                                     failureFlas: true })
+                                     failureFlash: true })
 );
 
 
