@@ -130,7 +130,7 @@ router.put('/lists/:listId', updateList);
 // delete route
 var deleteList = function(req, res) {
     debug("Removing", req.list.listName, req.list.ingredients);
-    req.list.delete(function(err, result) {
+    req.list.remove(function(err, result) {
         if (err) {
             debug("deleteList: ERROR:", err);
             res.status(500).jsonp(err);

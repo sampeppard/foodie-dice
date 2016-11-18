@@ -1,3 +1,10 @@
 //UPDATE
 
-curl -X PUT -H "Content-type:application/json" http://localhost:8000/api/lists/582e301ada76672f2ed40dbe -d '{"listName": "TestUpdate", "ingredients": [{"ingredientName": "pickles"}, {"ingredientName": "peter"}, {"ingredientName": "peppers"}, {"ingredientName": "paprika"}, {"ingredientName": "majoram"}, {"ingredientName": "dill"}, {"ingredientName": "snack"}]}'
+curl -X PUT -H "Content-type: application/json" http://localhost:8000/api/lists/582e301ada76672f2ed40dbe -d '{"listName": "TestUpdate", "ingredients": [{"ingredientName": "pickles"}, {"ingredientName": "peter"}, {"ingredientName": "peppers"}, {"ingredientName": "paprika"}, {"ingredientName": "majoram"}, {"ingredientName": "dill"}, {"ingredientName": "snack"}]}'
+
+
+
+
+//DELETE
+
+curl -X DELETE -H "Content-type: application/json" http://localhost:8000/api/lists/582efc4054b17137eda17be3
