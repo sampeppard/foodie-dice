@@ -1,6 +1,19 @@
 import { Component } from '@angular/core';
 import { ListService } from '../../services/list.service';
 import { List } from '../../../list.model';
+import { Ingredient } from '../../../ingredient.model';
+
+const INGREDIENTS: Ingredient[] = [
+    { ingredientName: "pickles" },
+    { ingredientName: "peter" },
+    { ingredientName: "piper" },
+    { ingredientName: "picked" },
+    { ingredientName: "peppers" },
+    { ingredientName: "paprika" },
+    { ingredientName: "majoram" },
+    { ingredientName: "dill" },
+    { ingredientName: "snack wells" }
+];
 
 @Component({
   moduleId: module.id,
@@ -11,7 +24,8 @@ import { List } from '../../../list.model';
 export class ListsComponent {
   lists: List[];
   listName: string;
-  ingredients: ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"];
+  ingredients: Ingredient[];
+
 
   constructor(private listService: ListService) {
     this.listService.getLists()
@@ -25,16 +39,25 @@ export class ListsComponent {
 
   addList(event) {
     event.preventDefault();
+    // var ingredientsJSON = [];
+    //
+    // for (var ingredientIndex = 0; ingredientIndex < ingredients.length; ingredientIndex++) {
+    //     currentIngredient = {
+    //         ingredientName:
+    //     }
+    //     ingredientsJSON.push()
+    // }
+
     var newList = {
       listName: this.listName,
-      ingredients: ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"]
-    }
+      ingredients: INGREDIENTS
+    };
 
     this.listService.addList(newList)
       .subscribe(list => {
         this.lists.push(list);
         this.listName = '';
-        this.ingredients = ["pickles", "peter", "piper", "picked", "peppers", "paprika", "majoram", "dill", "snack wells"];
-      })
+        this.ingredients = INGREDIENTS;
+    });
   }
 }

@@ -5,4 +5,4 @@ var Ingredient = (function () {
     return Ingredient;
 }());
 exports.Ingredient = Ingredient;
-//# sourceMappingURL=Ingredient.model.js.map
+//# sourceMappingURL=ingredient.model.js.map

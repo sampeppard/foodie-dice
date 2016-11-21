@@ -1,0 +1,36 @@
+//VALID INSERT
+
+curl -X POST -H "Content-type: application/json" http://localhost:8000/api/lists -d '{"listName": "TestInsert", "ingredients": [{"ingredientName": "ground mustard"}, {"ingredientName": "bay leaves"}, {"ingredientName": "pluots"}, {"ingredientName": "kirbys"}, {"ingredientName": "rice vinegar"}, {"ingredientName": "panko"}]}'
+
+//INVALID INSERT
+
+
+
+//UPDATE
+
+curl -X PUT -H "Content-type: application/json" http://localhost:8000/api/lists/582e301ada76672f2ed40dbe -d '{"listName": "TestUpdate", "ingredients": [{"ingredientName": "pickles"}, {"ingredientName": "peter"}, {"ingredientName": "peppers"}, {"ingredientName": "paprika"}, {"ingredientName": "majoram"}, {"ingredientName": "dill"}, {"ingredientName": "snack"}]}'
+
+
+//DELETE
+
+curl -X DELETE http://localhost:8000/api/lists/582f5f0eff17e23a9f31bbf1
+
+
+//GETALL
+
+curl -X GET http://localhost:8000/api/lists
+
+
+//GET ONE
+
+curl -X GET http://localhost:8000/api/lists/582f0ede7e41d23901b999ab
+
+
+//LOGIN VALID
+
+curl -X POST -H "Content-type: application/json" http://localhost:8000/login -d '{ "username": "test", "password": "password" }'
+
+
+//LOGIN INVALID
+
+curl -X POST -H "Content-type: application/json" http://localhost:8000/login -d '{ "username": "Ninja", "password": "Turtle" }'

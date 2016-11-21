@@ -1,4 +1,3 @@
-//import { Ingredient } from "./ingredient.model";
 "use strict";
 var List = (function () {
     function List() {
