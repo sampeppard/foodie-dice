@@ -5,6 +5,7 @@ var path = require('path');
 var debug = require('debug')('server');
 
 // Authentication
+var connectFlash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -36,7 +37,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', index);
 app.use('/api', listsAPI);
 
+
 // Passport Authentication
+// Middleware for passport
+app.use(connectFlash());
+
 app.use(passport.initialize());
 // Establish callback to be used to validate password
 //TODO: look into hashing
@@ -44,6 +49,7 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
         debug("Authenticating ", username, ",", password);
 
+        //TODO: verify that === orperator is safe for password check
         if ((username === config.username) && (password === config.password)) {
             var user = {
                 username: "warren",
@@ -63,10 +69,13 @@ passport.use(new LocalStrategy(
 
 //TODO: Potentially better to hand back JSON representation of User object (without sensitive info!)
 //NOTE: SENSITIVE DATA SHOULD NEVER LEAVE THE SERVER
+
 app.post('/login',
-    passport.authenticate('local', { successRedirect: '/',
-                                     failureRedirect: '/login',
-                                     failureFlash: true })
+    passport.authenticate('local', { session: false }),
+    function(req, res) {
+        debug("User ", req.user.firstName, " successfully authenticated");
+        res.redirect('/lists');
+    }
 );
 
 
