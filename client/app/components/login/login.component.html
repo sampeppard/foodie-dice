@@ -1,0 +1,8 @@
+<form class="well" (submit)="onLogin($event)">
+  <div class="form-group">
+    <input type="text" [(ngModel)]="username" name="username" class="form-control" placeholder="User Name">
+    <input type="text" [(ngModel)]="password" name="password"
+  </div>
+  <br>
+  <button type="submit" class="btn btn-xs btn-success">Login</button>
+</form>

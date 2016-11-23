@@ -61,7 +61,8 @@ ListsComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'lists',
-        templateUrl: 'lists.component.html'
+        templateUrl: 'lists.component.html',
+        providers: [list_service_1.ListService]
     }),
     __metadata("design:paramtypes", [list_service_1.ListService])
 ], ListsComponent);

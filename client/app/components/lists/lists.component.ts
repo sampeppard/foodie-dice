@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ListService } from '../../services/list.service';
-import { List } from '../../../list.model';
-import { Ingredient } from '../../../ingredient.model';
+import { List } from '../../models/list.model';
+import { Ingredient } from '../../models/ingredient.model';
 
 const INGREDIENTS: Ingredient[] = [
     { ingredientName: "pickles" },
@@ -18,7 +18,8 @@ const INGREDIENTS: Ingredient[] = [
 @Component({
   moduleId: module.id,
   selector: 'lists',
-  templateUrl: 'lists.component.html'
+  templateUrl: 'lists.component.html',
+  providers: [ ListService ]
 })
 
 export class ListsComponent {

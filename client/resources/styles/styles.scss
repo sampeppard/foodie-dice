@@ -1,0 +1,62 @@
+/* TEST STYLING */
+.selected {
+    $selectedBG: #CFD8DC;
+
+    background-color: $selectedBG !important;
+    color: white;
+}
+
+.heroes {
+    $hoverBG: #DDD;
+    $hoverColor: #607D8B;
+    $linkBG: #EEE;
+    $selectedHoverBG: #BBD8DC;
+    $badgeBG: #607D8B;
+
+    margin: 0 0 2em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 15em;
+
+    li {
+        cursor: pointer;
+        position: relative;
+        left: 0;
+        background-color: $linkBG;
+        margin: .5em;
+        padding: .3em 0;
+        height: 1.6em;
+        border-radius: 4px;
+
+        &:hover {
+            background-color: $hoverBG;
+            color: $hoverColor;
+            left: .1em;
+        }
+
+        &.selected:hover {
+            background-color: $selectedHoverBG !important;
+            color: white;
+        }
+    } //END li styles
+
+    .text {
+        position: relative;
+        top: -3px;
+    }
+
+    .badge {
+        display: inline-block;
+        font-size: small;
+        color: white;
+        padding: 0.8em 0.7em 0 0.7em;
+        background-color: $badgeBG;
+        line-height: 1em;
+        position: relative;
+        left: -1px;
+        top: -4.75px; //Adjustment Eyeballing
+        height: 1.8em;
+        margin-right: .8em;
+        border-radius: 4px 0 0 4px;
+    }
+}

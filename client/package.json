@@ -1,37 +1,66 @@
 {
   "name": "foodiedice",
   "version": "1.0.0",
+  "description": "Angular app for MEAN stack foodie dice project",
   "scripts": {
-    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
-    "lite": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tslint": "tslint -c tslint.json app/**/*.ts",
     "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
     "typings": "typings"
   },
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sampeppard/foodie-dice.git"
+  },
+  "keywords": [
+    "typescript",
+    "angular2",
+    "angular",
+    "foodie",
+    "MEAN"
+  ],
+  "author": "alexandre leibler, sam peppard, nicolas hurtado, zachary hedgepeth",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sampeppard/foodie-dice/issues"
+  },
+  "homepage": "https://github.com/sampeppard/foodie-dice#readme",
   "dependencies": {
-    "@angular/common": "~2.0.1",
-    "@angular/compiler": "~2.0.1",
-    "@angular/core": "~2.0.1",
-    "@angular/forms": "~2.0.1",
-    "@angular/http": "~2.0.1",
-    "@angular/platform-browser": "~2.0.1",
-    "@angular/platform-browser-dynamic": "~2.0.1",
-    "@angular/router": "~3.0.1",
-    "@angular/upgrade": "~2.0.1",
-    "angular-in-memory-web-api": "~0.1.1",
-    "bootstrap": "^3.3.7",
+    "@angular/common": "^2.1.2",
+    "@angular/compiler": "^2.1.2",
+    "@angular/core": "^2.1.2",
+    "@angular/forms": "^2.1.2",
+    "@angular/http": "^2.1.2",
+    "@angular/platform-browser": "^2.1.2",
+    "@angular/platform-browser-dynamic": "^2.1.2",
+    "@angular/router": "^3.1.2",
+    "@angular/upgrade": "^2.2.2",
+    "@types/core-js": "^0.9.34",
+    "@types/jasmine": "^2.5.37",
+    "@types/jquery": "^2.0.33",
+    "@types/node": "^6.0.46",
+    "angular-in-memory-web-api": "^0.1.13",
     "core-js": "^2.4.1",
     "reflect-metadata": "^0.1.8",
-    "rxjs": "5.0.0-beta.12",
-    "systemjs": "0.19.39",
-    "zone.js": "^0.6.25"
+    "rxjs": "^5.0.0-beta.12",
+    "systemjs": "^0.19.40",
+    "zone.js": "^0.6.26"
   },
   "devDependencies": {
-    "concurrently": "^3.0.0",
-    "lite-server": "^2.2.2",
-    "typescript": "^2.0.3",
-    "typings":"^1.4.0"
+    "bower-files": "^3.14.1",
+    "browser-sync": "^2.17.5",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^2.2.0",
+    "gulp-tslint": "^6.1.2",
+    "gulp-typescript": "^3.1.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "tsconfig-glob": "^0.4.3",
+    "tslint": "^3.15.1",
+    "typescript": "^2.0.6",
+    "typings": "^1.4.0"
   }
 }

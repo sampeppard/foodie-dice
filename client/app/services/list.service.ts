@@ -12,6 +12,7 @@ import 'rxjs/add/operator/map';
       .map(res => res.json());
   }
 
+  //TODO: figure out if JSON.stringify would work if we passed in a List object
   addList(newList) {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
