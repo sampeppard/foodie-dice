@@ -1,12 +1,34 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "outDir": "dist/app",
+    "target": "ES5",
+    "module": "system",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "moduleResolution": "node",
     "removeComments": false,
-    "noImplicitAny": false
-  }
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "filesGlob": [
+    "app/**/*.ts",
+    "typings/*.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  },
+  "files": [
+    "typings/index.d.ts",
+    "app/app-routing.module.ts",
+    "app/app.component.ts",
+    "app/app.module.ts",
+    "app/components/lists/lists.component.ts",
+    "app/components/login/login.component.ts",
+    "app/main.ts",
+    "app/models/ingredient.model.ts",
+    "app/models/list.model.ts",
+    "app/services/list.service.ts",
+    "app/services/login.service.ts"
+  ]
 }

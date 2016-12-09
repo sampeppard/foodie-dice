@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { ListService } from './services/list.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'my-app',
-  templateUrl: 'app.component.html',
-  providers: [ListService]
+  selector: 'foodie-app',
+  templateUrl: 'app.component.html'
 })
 
-export class AppComponent { }
+export class AppComponent {
+}

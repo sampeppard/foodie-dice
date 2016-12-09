@@ -1,0 +1,15 @@
+node_modules/
+bower_components/
+app/**/*.js
+app/**/*.map
+dist/
+build/
+jspm_packages
+typings/
+
+*~
+*.swo
+*.swp
+
+npm-debug.log
+.DS_Store

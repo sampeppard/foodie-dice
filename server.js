@@ -74,7 +74,7 @@ app.post('/login',
     passport.authenticate('local', { session: false }),
     function(req, res) {
         debug("User ", req.user.firstName, " successfully authenticated");
-        res.redirect('/lists');
+        res.redirect('/');
     }
 );
 

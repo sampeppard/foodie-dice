@@ -1,0 +1,5 @@
+build/**/* linguist-generated
+dist/**/* linguist-generated
+node_modules/* linguist-vendored
+bower_components/* linguist-vendored
+README.md linguist-documentation
